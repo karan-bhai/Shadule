@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadule</title>
+    <!-------------- stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="personalshadule.css">
+    <link rel="stylesheet" href="shadule.css">
+
+    <!------------ script file -->
+    <script src="shadule.js" defer></script>
+
+    
+</head>
+<body>
+    
+    <nav>
+        <div class="menubar">
+            <div class="logo">
+                <a href="#"><h2>Fit-Table</h2></a>
+            </div>
+            <div class="menu-icon" id="mobMenuIcon">
+                <h1 id="mobmenuh">&#9776</h1>
+            </div>
+            <div class="others"> 
+                <a href="https://www.instagram.com/_.its_karrrrrrrrrrrran_.750/"><h3>Help</h3></a> 
+                <a href="https://www.instagram.com/_.its_karrrrrrrrrrrran_.750/"><h3>Contact Us</h3></a> 
+            </div>
+        </div>
+    </nav>
+    <!-- hem menu -->
+    <div class="hem-menu" id="hemMenu"> 
+        <a href="https://www.instagram.com/_.its_karrrrrrrrrrrran_.750/"><h4>Help</h4></a>
+        <a href="https://www.instagram.com/_.its_karrrrrrrrrrrran_.750/"><h4>Contact Us</h4></a>
+    </div>
+
+    <!-- Table container-->
+    <div class="table-container">
+        <table class="shadule" id="shadule" border="2">
+            <tr>
+                <th>S.No</th>
+                <th>Days</th>
+                <th id="h1">Work-Out1</th>
+                <th id="h2">Work-Out2</th>
+                <th id="h3">Work-Out3</th>
+            </tr>
+            <tr>
+                <td>1.</td>
+                <td>Monday</td>
+                <td class="td-edit">Chest</td>
+                <td class="td-edit">Abs</td>
+                <td class="td-edit">M</td>
+            </tr>
+            <tr>
+                <td>2.</td>
+                <td>Tuesday</td>
+                <td class="td-edit">Sholder</td>
+                <td class="td-edit">Bisep</td>
+                <td class="td-edit">K</td>
+            </tr>
+            <tr>
+                <td>3.</td>
+                <td>Wednesday</td>
+                <td class="td-edit">Leg</td>
+                <td class="td-edit">Back</td>
+                <td class="td-edit">M</td>
+            </tr>
+            <tr>
+                <td>4.</td>
+                <td>Thursday</td>
+                <td class="td-edit">Chest</td>
+                <td class="td-edit">Abs</td>
+                <td class="td-edit">K</td>
+            </tr>
+            <tr>
+                <td>5.</td>
+                <td>Friday</td>
+                <td class="td-edit">Sholder</td>
+                <td class="td-edit">Bisep</td>
+                <td class="td-edit">M</td>
+            </tr>
+            <tr>
+                <td>6.</td>
+                <td>Saturday</td>
+                <td class="td-edit">Leg</td>
+                <td class="td-edit">Back</td>
+                <td class="td-edit">K</td>
+            </tr>
+            <tr>
+                <td>7.</td>
+                <td>Sunday</td>
+                <td class="td-edit">Coding</td>
+                <td class="td-edit">Coding</td>
+                <td class="td-edit">M</td>
+            </tr>
+        </table>
+        <div class="button-container">
+            <button type="button" id="editBtn">Edit</button>
+            <button type="button" id="saveBtn" style="display:none;">Save</button>
+        </div>
+    </div>
+
+
+<script>
+    // Hemburger menu
+const Mob_menu_icon = document.getElementById("mobMenuIcon");
+const MobMenuH1 = document.getElementById("mobmenuh");
+const hemMenu = document.getElementById("hemMenu")
+let flag =1;
+Mob_menu_icon.addEventListener("click",(evnt)=>{
+    if(flag==1)
+    {
+      MobMenuH1.innerHTML="&#10005"
+      hemMenu.style.display="flex"
+      flag=0;
+      
+    }else{
+      MobMenuH1.innerHTML="&#9776";
+    hemMenu.style.display="none";
+    flag=1
+    }
+
+})
+
+
+
+
+
+// inside function
+
+document.addEventListener('DOMContentLoaded', function () {
+            let canEdit = true;
+
+            document.getElementById('editBtn').addEventListener('click', function () {
+                if (canEdit) {
+                    alert('You are allowed to edit this only one time.');
+                    canEdit = false;
+
+                    // Make headings editable
+                    document.getElementById('h1').contentEditable = "true";
+                    document.getElementById('h2').contentEditable = "true";
+                    document.getElementById('h3').contentEditable = "true";
+
+                    // Make the cells in the last three columns editable
+                    const editableCells = document.querySelectorAll('.td-edit');
+                    editableCells.forEach(cell => {
+                        cell.contentEditable = "true";
+                        cell.style.border = "1px solid red"; // Highlight editable cells
+                    });
+
+                    document.getElementById('editBtn').style.display = 'none';
+                    document.getElementById('saveBtn').style.display = 'inline-block';
+                } else {
+                    alert('You can edit the headings and cells only once.');
+                }
+            });
+
+            document.getElementById('saveBtn').addEventListener('click', function () {
+                // Disable editing
+                document.getElementById('h1').contentEditable = "false";
+                document.getElementById('h2').contentEditable = "false";
+                document.getElementById('h3').contentEditable = "false";
+
+                const editableCells = document.querySelectorAll('.td-edit');
+                editableCells.forEach(cell => {
+                    cell.contentEditable = "false";
+                    cell.style.border = "none"; // Remove highlight
+                });
+
+                // Save data to local storage
+                const tableData = [];
+                const rows = document.querySelectorAll('#shadule tr');
+                rows.forEach((row, rowIndex) => {
+                    const rowData = [];
+                    row.querySelectorAll('th, td').forEach((cell, cellIndex) => {
+                        if (rowIndex === 0 && cellIndex > 1) { // Save headers
+                            rowData.push(cell.textContent);
+                        } else if (rowIndex > 0 && cellIndex > 1) { // Save cell data
+                            rowData.push(cell.textContent);
+                        }
+                    });
+                    if (rowData.length) {
+                        tableData.push(rowData);
+                    }
+                });
+                localStorage.setItem('shaduleData', JSON.stringify(tableData));
+
+                document.getElementById('saveBtn').style.display = 'none';
+            });
+
+            // Load data from local storage
+            const savedData = JSON.parse(localStorage.getItem('shaduleData'));
+            if (savedData) {
+                savedData.forEach((rowData, rowIndex) => {
+                    rowData.forEach((cellData, cellIndex) => {
+                        if (rowIndex === 0) { // Load headers
+                            document.getElementById(`h${cellIndex + 1}`).textContent = cellData;
+                        } else { // Load cell data
+                            document.querySelectorAll('.td-edit')[(rowIndex - 1) * 3 + cellIndex].textContent = cellData;
+                        }
+                    });
+                });
+            }
+        });
+</script>
+</body>
+</html>
